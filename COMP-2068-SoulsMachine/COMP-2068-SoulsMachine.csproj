@@ -20,7 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,8 +59,18 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="graphic coordinates.xlsx" />
-    <Content Include="Scripts\game.js.map" />
+    <Content Include="assets\images\whitesoul.png" />
+    <Content Include="assets\images\betHalf.png" />
+    <Content Include="assets\images\betMax.png" />
+    <Content Include="assets\images\betOne.png" />
+    <Content Include="assets\images\largesoul.png" />
+    <Content Include="assets\images\blanksoul.png" />
+    <Content Include="assets\images\lordsoul.png" />
+    <Content Include="assets\images\mediumsoul.png" />
+    <Content Include="assets\images\grandsoul.png" />
+    <Content Include="assets\images\smallsoul.png" />
+    <Content Include="assets\images\SoulsMachine.png" />
+    <Content Include="assets\images\tinysoul.png" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -69,28 +79,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\images\background.png" />
-    <Content Include="assets\images\banana.png" />
-    <Content Include="assets\images\bar.png" />
-    <Content Include="assets\images\bell.png" />
-    <Content Include="assets\images\betMaxButton.png" />
-    <Content Include="assets\images\betOneButton.png" />
-    <Content Include="assets\images\blank.png" />
-    <Content Include="assets\images\cherry.png" />
-    <Content Include="assets\images\grapes.png" />
-    <Content Include="assets\images\orange.png" />
-    <Content Include="assets\images\resetButton.png" />
-    <Content Include="assets\images\seven.png" />
     <Content Include="assets\images\spinButton.png" />
-    <Content Include="COMP2068-SlotMachineDemo.csproj" />
     <Content Include="css\game.css" />
     <Content Include="index.html" />
-    <Content Include="Scripts\game.js" />
     <Content Include="Scripts\lib\easeljs-0.8.0.min.js" />
     <Content Include="Scripts\lib\preloadjs-0.6.0.min.js" />
     <Content Include="Scripts\lib\soundjs-0.6.0.min.js" />
     <Content Include="Scripts\lib\tweenjs-0.6.0.min.js" />
-    <None Include="Scripts\_references.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

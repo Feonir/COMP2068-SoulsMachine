@@ -1,10 +1,23 @@
-﻿var canvas;
+﻿/*
+*Source File Name : SlotMachineDemo
+*Author Name / Last Modified By: Robert Berry
+*This program is a slot machine with a Darksouls 2 Theme.
+*Revision History: 0.1
+*
+*/
+
+
+//Game UI
+var canvas;
 var stage: createjs.Stage;
 
 // Game Objects 
 var game: createjs.Container;
 var background: createjs.Bitmap;
 var spinButton: createjs.Bitmap;
+var betMax: createjs.Bitmap;
+var betHalf: createjs.Bitmap;
+var betOne: createjs.Bitmap;
 var tiles: createjs.Bitmap[] = [];
 var tileContainers: createjs.Container[] = [];
 
@@ -31,6 +44,12 @@ var bells = 0;
 var sevens = 0;
 var blanks = 0;
 
+
+/*
+*This method sets the game loop and canvas up.
+*We are running at 60 frames per second.
+*
+*/
 function init() {
     canvas = document.getElementById("canvas");
     stage = new createjs.Stage(canvas);
@@ -41,6 +60,10 @@ function init() {
     main();
 }
 
+/*
+*Self explanitory, each frame, run this loop, update the stage.
+*
+*/
 function gameLoop() {
 
 
@@ -60,40 +83,121 @@ function resetFruitTally() {
     blanks = 0;
 }
 
-// Event handlers
+// Event handlers each handler makes the button it belongs to either alpha, unalphaed or runs the betting function.
 
-function spinButtonOut() {
-
-    spinButton.alpha = 1.0;
-
-
+function MaxButtonOut() {
+    betMax.alpha = 1.0;
 }
 
-function spinButtonOver() {
-    spinButton.alpha = 0.5;
-
+function MaxButtonOver() {
+    betMax.alpha = 0.5;
 }
 
-function spinReels() {
-    // Add Spin Reels code here
-    spinResult = Reels();
-    fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
-    console.log(fruits);
+function MaxClicked() {
 
-
-    for (var tile = 0; tile < 3; tile++) {
-        if (turn > 0) {
-            game.removeChild(tiles[tile]);
-        }
-        tiles[tile] = new createjs.Bitmap("assets/images/" + spinResult[tile] + ".png");
-        tiles[tile].x = 59 + (105 * tile);
-        tiles[tile].y = 188;
-        
-        game.addChild(tiles[tile]);
-        console.log(game.getNumChildren());
+    if (playerBet >= 1) {
+        playerMoney += playerBet;
+        playerBet = 0;
     }
 
+    if (playerMoney >= 100)
+    {
+        playerMoney -= 100;
+        playerBet = 100;
+        console.log("You bet" + playerBet + ": of " + playerMoney + " souls left.");
+    }
+    else
+    {
+        return;
+    }
+}
 
+function HalfClicked() {
+
+    if (playerBet >= 1) {
+        playerMoney += playerBet;
+        playerBet = 0;
+    }
+
+    if (playerMoney >= 50) {
+        playerMoney -= 50;
+        playerBet = 50;
+        console.log("You bet" + playerBet + ": of " + playerMoney + " souls left.");
+    }
+    else {
+        return;
+    }
+}
+
+function OneClicked() {
+
+    if (playerBet <= 99 && playerMoney >= 1) {
+        playerBet++;
+        playerMoney--;
+        console.log("You bet" + playerBet + ": of " + playerMoney + " souls left.");
+    }
+    else {
+        return;
+    }
+}
+
+function HalfButtonOut() {
+    betHalf.alpha = 1.0;
+}
+
+function HalfButtonOver() {
+    betHalf.alpha = 0.5;
+}
+
+function OneButtonOut() {
+    betOne.alpha = 1.0;
+}
+
+function OneButtonOver() {
+    betOne.alpha = 0.5;
+}
+
+function ButtonOut() {
+    spinButton.alpha = 1.0;
+}
+
+function ButtonOver() {
+    spinButton.alpha = 0.5;
+}
+
+/*
+*Our actual spinning method, get the results of the array in spaces 0 1 2 which is slot 1 2 3 in normal language.
+*Load the spun reels image as well here.
+*/
+function spinReels() {
+
+    if (playerBet >= 1) {
+        //Nom player bet and add to jack pot
+        jackpot += playerBet;
+        playerBet = 0;
+
+        // Add Spin Reels code here
+        spinResult = Reels();
+        fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
+        //console.log(fruits);
+
+
+        for (var tile = 0; tile < 3; tile++) {
+            if (turn > 0) {
+                game.removeChild(tiles[tile]);
+            }
+            tiles[tile] = new createjs.Bitmap("assets/images/" + spinResult[tile] + ".png");
+            tiles[tile].x = 185 + (131 * tile);
+            tiles[tile].y = 133;
+
+            game.addChild(tiles[tile]);
+            //console.log(game.getNumChildren());
+        }
+    }
+
+    else {
+        return;
+    }
 }
 
 /* Utility function to check if a value falls within a range of bounds */
@@ -116,35 +220,35 @@ function Reels() {
         outCome[spin] = Math.floor((Math.random() * 65) + 1);
         switch (outCome[spin]) {
             case checkRange(outCome[spin], 1, 27):  // 41.5% probability
-                betLine[spin] = "blank";
+                betLine[spin] = "blanksoul";
                 blanks++;
                 break;
             case checkRange(outCome[spin], 28, 37): // 15.4% probability
-                betLine[spin] = "grapes";
+                betLine[spin] = "tinysoul";
                 grapes++;
                 break;
             case checkRange(outCome[spin], 38, 46): // 13.8% probability
-                betLine[spin] = "banana";
+                betLine[spin] = "smallsoul";
                 bananas++;
                 break;
             case checkRange(outCome[spin], 47, 54): // 12.3% probability
-                betLine[spin] = "orange";
+                betLine[spin] = "mediumsoul";
                 oranges++;
                 break;
             case checkRange(outCome[spin], 55, 59): //  7.7% probability
-                betLine[spin] = "cherry";
+                betLine[spin] = "largesoul";
                 cherries++;
                 break;
             case checkRange(outCome[spin], 60, 62): //  4.6% probability
-                betLine[spin] = "bar";
+                betLine[spin] = "grandsoul";
                 bars++;
                 break;
             case checkRange(outCome[spin], 63, 64): //  3.1% probability
-                betLine[spin] = "bell";
+                betLine[spin] = "whitesoul";
                 bells++;
                 break;
             case checkRange(outCome[spin], 65, 65): //  1.5% probability
-                betLine[spin] = "seven";
+                betLine[spin] = "lordsoul";
                 sevens++;
                 break;
         }
@@ -176,6 +280,9 @@ function determineWinnings() {
         }
         else if (sevens == 3) {
             winnings = playerBet * 100;
+            winnings += jackpot;
+            console.log("YOU WON THE JACKPOT OF: " + jackpot + "!");
+            jackpot = 0;
         }
         else if (grapes == 2) {
             winnings = playerBet * 2;
@@ -206,6 +313,8 @@ function determineWinnings() {
             winnings = playerBet * 5;
         }
         winNumber++;
+        playerMoney += winnings;
+        winnings = 0;
        // showWinMessage();
     }
     else {
@@ -215,20 +324,52 @@ function determineWinnings() {
 
 }
 
+/*
+*Creates all the background and visual assets, this is run once.
+*
+*/
 function createUI():void {
     // instantiate my background
-    background = new createjs.Bitmap("assets/images/background.png");
+    background = new createjs.Bitmap("assets/images/SoulsMachine.png");
     game.addChild(background);
 
-    // Spin Button
+    // Bet Button s
+    betMax = new createjs.Bitmap("assets/images/betMax.png");
+    betMax.x = 129;
+    betMax.y = 362;
+
+    betMax.addEventListener("click", MaxClicked);
+    betMax.addEventListener("mouseover", MaxButtonOver);
+    betMax.addEventListener("mouseout", MaxButtonOut);
+    game.addChild(betMax);
+
+    betHalf = new createjs.Bitmap("assets/images/betHalf.png");
+    betHalf.x = 253;
+    betHalf.y = 360;
+
+    betHalf.addEventListener("click", HalfClicked);
+    betHalf.addEventListener("mouseover", HalfButtonOver);
+    betHalf.addEventListener("mouseout", HalfButtonOut);
+    game.addChild(betHalf);
+
+    betOne = new createjs.Bitmap("assets/images/betOne.png");
+    betOne.x = 375;
+    betOne.y = 362;
+
+    betOne.addEventListener("click", OneClicked);
+    betOne.addEventListener("mouseover", OneButtonOver);
+    betOne.addEventListener("mouseout", OneButtonOut);
+    game.addChild(betOne);
+
+    // Spin Button 
     spinButton = new createjs.Bitmap("assets/images/spinButton.png");
-    spinButton.x = 323;
-    spinButton.y = 376;
+    spinButton.x = 499;
+    spinButton.y = 360;
     game.addChild(spinButton);
 
     spinButton.addEventListener("click", spinReels);
-    spinButton.addEventListener("mouseover", spinButtonOver);
-    spinButton.addEventListener("mouseout", spinButtonOut);
+    spinButton.addEventListener("mouseover", ButtonOver);
+    spinButton.addEventListener("mouseout", ButtonOut);
 }
 
 
